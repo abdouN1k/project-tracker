@@ -1,75 +1,79 @@
 const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
-const Task = require('../models/Task');
-const { protect } = require('../middleware/auth');
+const auth = require('../middleware/auth');
 
-router.get('/', protect, async (req, res) => {
+// GET all projects (visible to everyone)
+router.get('/', auth, async (req, res) => {
   try {
-    const projects = await Project.find({
-      $or: [{ owner: req.user._id }, { 'members.user': req.user._id }]
-    })
-    .populate('owner', 'name email')
-    .populate('members.user', 'name email isOnline')
-    .sort('-updatedAt');
-    res.json(projects);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-router.post('/', protect, async (req, res) => {
-  try {
-    const project = await Project.create({
-      ...req.body,
-      owner: req.user._id,
-      members: [{ user: req.user._id, role: 'admin' }]
-    });
-    const populated = await Project.findById(project._id)
+    const projects = await Project.find()
       .populate('owner', 'name email')
-      .populate('members.user', 'name email');
-    res.status(201).json(populated);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+      .sort({ createdAt: -1 });
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-router.get('/:id', protect, async (req, res) => {
+// GET single project
+router.get('/:id', auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id)
-      .populate('owner', 'name email')
-      .populate('members.user', 'name email isOnline');
-    if (!project) return res.status(404).json({ message: 'Project ma l9inahch' });
-
-    const tasks = await Task.find({ project: project._id })
-      .populate('assignedTo', 'name email')
-      .populate('createdBy', 'name')
-      .sort('order');
-
-    res.json({ project, tasks });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+      .populate('owner', 'name email');
+    if (!project) return res.status(404).json({ message: 'Projet introuvable' });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-router.post('/:id/members', protect, async (req, res) => {
+// CREATE project
+router.post('/', auth, async (req, res) => {
+  try {
+    const { title, description, status, category } = req.body;
+    const project = new Project({
+      title,
+      description,
+      status: status || 'En cours',
+      category: category || 'Général',
+      owner: req.user.id
+    });
+    await project.save();
+    const populated = await Project.findById(project._id).populate('owner', 'name email');
+    res.status(201).json(populated);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// UPDATE project (only owner)
+router.put('/:id', auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
-    if (!project) return res.status(404).json({ message: 'Project ma l9inahch' });
-
-    const { userId, role } = req.body;
-    const alreadyMember = project.members.find(m => m.user.toString() === userId);
-    if (alreadyMember) return res.status(400).json({ message: 'Had user deja f project' });
-
-    project.members.push({ user: userId, role: role || 'editor' });
+    if (!project) return res.status(404).json({ message: 'Projet introuvable' });
+    if (project.owner.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Non autorisé' });
+    }
+    Object.assign(project, req.body);
     await project.save();
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-    const updated = await Project.findById(project._id)
-      .populate('owner', 'name email')
-      .populate('members.user', 'name email isOnline');
-    res.json(updated);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+// DELETE project (only owner)
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).json({ message: 'Projet introuvable' });
+    if (project.owner.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Non autorisé' });
+    }
+    await project.deleteOne();
+    res.json({ message: 'Projet supprimé' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

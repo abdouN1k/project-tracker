@@ -1,33 +1,41 @@
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FaLeaf, FaHome, FaProjectDiagram, FaComments, FaSignOutAlt } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
-import { useSocket } from '../../context/SocketContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const { onlineUsers } = useSocket();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="navbar">
-      <div className="navbar-search">
-        <input type="text" placeholder="🔍 9lleb..." />
+    <nav className="navbar">
+      <Link to="/" className="navbar-brand">
+        <FaLeaf size={24} />
+        <span>CoSider Agrico UEV</span>
+      </Link>
+      <div className="navbar-links">
+        <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+          <FaHome /> Accueil
+        </Link>
+        <Link to="/projects" className={`nav-link ${isActive('/projects') ? 'active' : ''}`}>
+          <FaProjectDiagram /> Projets
+        </Link>
+        <Link to="/chat" className={`nav-link ${isActive('/chat') ? 'active' : ''}`}>
+          <FaComments /> Messages
+        </Link>
+        <span className="user-badge">👤 {user?.name}</span>
+        <button className="nav-link" onClick={handleLogout} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+          <FaSignOutAlt /> Déconnexion
+        </button>
       </div>
-
-      <div className="navbar-right">
-        <div className="online-count">
-          <span className="online-dot"></span>
-          {onlineUsers.length} online
-        </div>
-
-        <div className="user-menu" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div className="user-avatar">
-            {user?.name?.charAt(0).toUpperCase()}
-          </div>
-          <span style={{ fontWeight: 500 }}>{user?.name}</span>
-          <button onClick={logout} className="btn-logout">
-            Sortir
-          </button>
-        </div>
-      </div>
-    </div>
+    </nav>
   );
 };
 
