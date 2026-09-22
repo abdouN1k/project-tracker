@@ -1,43 +1,48 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ChatRoom from '../components/Chat/ChatRoom';
 
 const ChatPage = () => {
   const { API } = useAuth();
-  const [projects, setProjects] = useState([]);
-  const [selectedConv, setSelectedConv] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      const { data } = await API.get('/users');
+      setUsers(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [API]);
 
   useEffect(() => {
-    API.get('/projects').then(({ data }) => {
-      setProjects(data);
-      if (data.length > 0) setSelectedConv(`project_${data[0]._id}`);
-    });
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="chat-page">
-      <div className="chat-sidebar">
-        <h3>💬 Chat</h3>
-        <p style={{ fontSize: 12, color: '#6B7280', margin: '10px 0' }}>Projects</p>
-        {projects.map(p => (
-          <div
-            key={p._id}
-            onClick={() => setSelectedConv(`project_${p._id}`)}
-            style={{
-              padding: '10px',
-              borderRadius: 8,
-              cursor: 'pointer',
-              background: selectedConv === `project_${p._id}` ? '#EEF2FF' : 'transparent',
-              marginBottom: 4
-            }}
-          >
-            <strong>{p.name}</strong>
-          </div>
-        ))}
+    <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+      <div style={{ width: '250px', borderRight: '1px solid #ccc' }}>
+        <h3>المستخدمون</h3>
+        <ul>
+          {users.map((u) => (
+            <li
+              key={u._id}
+              onClick={() => setSelectedUser(u)}
+              style={{ cursor: 'pointer', padding: '5px 0' }}
+            >
+              {u.name}
+            </li>
+          ))}
+        </ul>
       </div>
-
-      <div className="chat-area">
-        {selectedConv ? <ChatRoom conversationId={selectedConv} /> : <div style={{ padding: 20 }}>Select conversation</div>}
+      <div style={{ flex: 1 }}>
+        {selectedUser ? (
+          <ChatRoom roomId={selectedUser._id} />
+        ) : (
+          <p>اختر مستخدماً لبدء المحادثة</p>
+        )}
       </div>
     </div>
   );
