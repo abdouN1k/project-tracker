@@ -2,9 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
-
-// كيتعرف على IP ديال الجهاز أوتوماتيكياً باش يخدم في التليفون والبيسي
-const HOST = window.location.hostname;
 const API = axios.create({ baseURL: 'https://project-tracker-backend-85u8.onrender.com/api' });
 
 API.interceptors.request.use((config) => {

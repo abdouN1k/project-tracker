@@ -4,6 +4,8 @@ import { useAuth } from './AuthContext';
 
 const SocketContext = createContext();
 
+const SOCKET_URL = 'https://project-tracker-backend-85u8.onrender.com';
+
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -11,10 +13,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (user?.token) {
-      const HOST = window.location.hostname;
-      const newSocket = io('https://project-tracker-backend-85u8.onrender.com', {
-  auth: { token: user.token }
-});
+      const newSocket = io(SOCKET_URL, {
         auth: { token: user.token }
       });
 
