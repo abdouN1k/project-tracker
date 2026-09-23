@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaHome, FaProjectDiagram, FaComments, FaSignOutAlt } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
-import Logo from '../Common/Logo';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -18,9 +17,9 @@ const Navbar = () => {
   return (
     <nav className="navbar" style={{ background: '#ffffff', borderBottom: '3px solid #16a34a' }}>
       <Link to="/" className="navbar-brand" style={{ textDecoration: 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ color: '#ffffff', fontSize: 18, fontWeight: 800, lineHeight: 1.1 }}>
-            <span style={{ color: '#dc2626' }}>CoSider Agrico</span>
+        <div>
+          <div style={{ color: '#dc2626', fontSize: 18, fontWeight: 800, lineHeight: 1.1 }}>
+            CoSider Agrico
           </div>
           <div style={{ color: '#16a34a', fontSize: 12, fontWeight: 600 }}>
             Unité Espaces Verts
