@@ -16,21 +16,17 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="navbar-brand">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="15" fill="#dc2626" />
-            <text x="16" y="12" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">CoSider</text>
-            <text x="16" y="20" textAnchor="middle" fill="#86efac" fontSize="5" fontWeight="bold">Agrico</text>
-            <text x="16" y="27" textAnchor="middle" fill="#86efac" fontSize="4">UEV</text>
-          </svg>
-          <div>
-            <span style={{ color: '#dc2626', fontSize: 18, fontWeight: 700 }}>CoSider Agrico</span>
-            <br />
-            <span style={{ color: '#86efac', fontSize: 11, fontWeight: 500 }}>Unité Espaces Verts</span>
+      <Link to="/" className="navbar-brand" style={{ textDecoration: 'none' }}>
+        <div>
+          <div style={{ color: '#ffffff', fontSize: 18, fontWeight: 800, lineHeight: 1.1 }}>
+            <span style={{ color: '#fecaca' }}>CoSider Agrico</span>
+          </div>
+          <div style={{ color: '#bbf7d0', fontSize: 12, fontWeight: 600 }}>
+            Unité Espaces Verts
           </div>
         </div>
       </Link>
+
       <div className="navbar-links">
         <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
           <FaHome /> Accueil
@@ -41,7 +37,11 @@ const Navbar = () => {
         <Link to="/chat" className={`nav-link ${isActive('/chat') ? 'active' : ''}`}>
           <FaComments /> Messages
         </Link>
-        <span className="user-badge">👤 {user?.name} ({user?.role})</span>
+
+        <span className="user-badge">
+          👤 {user?.name} {user?.role ? `(${user.role})` : ''}
+        </span>
+
         <button
           className="nav-link"
           onClick={handleLogout}

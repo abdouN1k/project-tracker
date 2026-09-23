@@ -28,14 +28,16 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card fade-in">
-        <div className="auth-logo">
-          <h1>
-            <span style={{ color: '#dc2626' }}>CoSider Agrico</span>
-            {' '}
-            <span style={{ color: '#16a34a' }}>Unité Espaces Verts</span>
+        <div className="auth-logo" style={{ textAlign: 'center', marginBottom: 24 }}>
+          <h1 style={{ margin: 0, lineHeight: 1.2 }}>
+            <span style={{ color: '#dc2626', fontWeight: 800 }}>CoSider Agrico</span>
           </h1>
-          <p>Connectez-vous à votre compte</p>
+          <h2 style={{ margin: '6px 0 0', color: '#16a34a', fontWeight: 700, fontSize: 20 }}>
+            Unité Espaces Verts
+          </h2>
+          <p style={{ marginTop: 8, color: '#6b7280' }}>Connectez-vous à votre compte</p>
         </div>
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label"><FaEnvelope /> Email</label>
@@ -48,6 +50,7 @@ const Login = () => {
               placeholder="votre@email.com"
             />
           </div>
+
           <div className="form-group">
             <label className="form-label"><FaLock /> Mot de passe</label>
             <input
@@ -59,6 +62,7 @@ const Login = () => {
               placeholder="••••••••"
             />
           </div>
+
           <button
             type="submit"
             className="btn btn-primary"
@@ -68,8 +72,12 @@ const Login = () => {
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>
+
         <p style={{ textAlign: 'center', marginTop: 20, color: '#6b7280' }}>
-          Pas de compte ? <Link to="/register" style={{ color: '#16a34a', fontWeight: 600 }}>S'inscrire</Link>
+          Pas de compte ?{' '}
+          <Link to="/register" style={{ color: '#16a34a', fontWeight: 600 }}>
+            S'inscrire
+          </Link>
         </p>
       </div>
     </div>

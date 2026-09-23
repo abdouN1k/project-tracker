@@ -6,7 +6,12 @@ import { useAuth } from '../../context/AuthContext';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '', email: '', password: '', phone: '', poste: '', role: 'Responsable Projet'
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    poste: '',
+    role: 'Responsable Projet'
   });
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
@@ -33,14 +38,16 @@ const Register = () => {
   return (
     <div className="auth-container">
       <div className="auth-card fade-in" style={{ maxWidth: 520 }}>
-        <div className="auth-logo">
-          <h1>
-            <span style={{ color: '#dc2626' }}>CoSider Agrico</span>
-            {' '}
-            <span style={{ color: '#16a34a' }}>Unité Espaces Verts</span>
+        <div className="auth-logo" style={{ textAlign: 'center', marginBottom: 24 }}>
+          <h1 style={{ margin: 0, lineHeight: 1.2 }}>
+            <span style={{ color: '#dc2626', fontWeight: 800 }}>CoSider Agrico</span>
           </h1>
-          <p>Création d'un compte professionnel</p>
+          <h2 style={{ margin: '6px 0 0', color: '#16a34a', fontWeight: 700, fontSize: 20 }}>
+            Unité Espaces Verts
+          </h2>
+          <p style={{ marginTop: 8, color: '#6b7280' }}>Création d'un compte professionnel</p>
         </div>
+
         <form onSubmit={handleSubmit}>
           <div className="grid grid-2">
             <div className="form-group">
@@ -54,6 +61,7 @@ const Register = () => {
                 onChange={(e) => handleChange('name', e.target.value)}
               />
             </div>
+
             <div className="form-group">
               <label className="form-label"><FaIdBadge /> Rôle</label>
               <select
@@ -65,6 +73,7 @@ const Register = () => {
                 <option value="Directeur">Directeur</option>
               </select>
             </div>
+
             <div className="form-group">
               <label className="form-label"><FaEnvelope /> Email</label>
               <input
@@ -76,28 +85,31 @@ const Register = () => {
                 onChange={(e) => handleChange('email', e.target.value)}
               />
             </div>
+
             <div className="form-group">
               <label className="form-label"><FaPhone /> N° Téléphone</label>
               <input
                 type="tel"
                 className="input"
                 required
-                placeholder="06XX XXX XXX"
+                placeholder="06XXXXXXXX"
                 value={formData.phone}
                 onChange={(e) => handleChange('phone', e.target.value)}
               />
             </div>
+
             <div className="form-group">
               <label className="form-label"><FaBriefcase /> Poste</label>
               <input
                 type="text"
                 className="input"
                 required
-                placeholder="Ex: Ingénieur Génie Civil"
+                placeholder="Ex: Ingénieur / Chef de chantier"
                 value={formData.poste}
                 onChange={(e) => handleChange('poste', e.target.value)}
               />
             </div>
+
             <div className="form-group">
               <label className="form-label"><FaLock /> Mot de passe</label>
               <input
@@ -111,6 +123,7 @@ const Register = () => {
               />
             </div>
           </div>
+
           <button
             type="submit"
             className="btn btn-primary"
@@ -120,8 +133,12 @@ const Register = () => {
             {loading ? 'Création...' : 'Créer mon compte'}
           </button>
         </form>
+
         <p style={{ textAlign: 'center', marginTop: 20, color: '#6b7280' }}>
-          Déjà inscrit ? <Link to="/login" style={{ color: '#16a34a', fontWeight: 600 }}>Se connecter</Link>
+          Déjà inscrit ?{' '}
+          <Link to="/login" style={{ color: '#16a34a', fontWeight: 600 }}>
+            Se connecter
+          </Link>
         </p>
       </div>
     </div>
