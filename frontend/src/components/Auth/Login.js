@@ -28,19 +28,17 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card fade-in">
-        <div className="auth-logo" style={{ textAlign: 'center', marginBottom: 24 }}>
-          <h1 style={{ margin: 0, lineHeight: 1.2 }}>
-            <span style={{ color: '#dc2626', fontWeight: 800 }}>CoSider Agrico</span>
-          </h1>
-          <h2 style={{ margin: '6px 0 0', color: '#16a34a', fontWeight: 700, fontSize: 20 }}>
-            Unité Espaces Verts
-          </h2>
-          <p style={{ marginTop: 8, color: '#6b7280' }}>Connectez-vous à votre compte</p>
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          <div style={{ color: '#dc2626', fontSize: 24, fontWeight: 800 }}>CoSider Agrico</div>
+          <div style={{ color: '#16a34a', fontSize: 14, fontWeight: 600 }}>Unité Espaces Verts</div>
         </div>
+        <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: 20, fontSize: 14 }}>
+          Plateforme de Gestion des Chantiers & Projets
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label"><FaEnvelope /> Email</label>
+            <label className="form-label"><FaEnvelope /> Email professionnel</label>
             <input
               type="email"
               className="input"
@@ -66,17 +64,17 @@ const Login = () => {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', justifyContent: 'center' }}
+            style={{ width: '100%', justifyContent: 'center', height: 45 }}
             disabled={loading}
           >
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? 'Connexion en cours...' : 'Se connecter'}
           </button>
         </form>
 
         <p style={{ textAlign: 'center', marginTop: 20, color: '#6b7280' }}>
-          Pas de compte ?{' '}
-          <Link to="/register" style={{ color: '#16a34a', fontWeight: 600 }}>
-            S'inscrire
+          Pas encore de compte ?{' '}
+          <Link to="/register" style={{ color: '#16a34a', fontWeight: 700 }}>
+            Créer un compte
           </Link>
         </p>
       </div>

@@ -26,10 +26,10 @@ const Register = () => {
     setLoading(true);
     try {
       await register(formData);
-      toast.success('Compte créé avec succès !');
+      toast.success('Compte professionnel créé avec succès !');
       navigate('/');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Erreur d\'inscription');
+      toast.error(err.response?.data?.message || 'Erreur lors de l\'inscription');
     } finally {
       setLoading(false);
     }
@@ -37,16 +37,14 @@ const Register = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-card fade-in" style={{ maxWidth: 520 }}>
-        <div className="auth-logo" style={{ textAlign: 'center', marginBottom: 24 }}>
-          <h1 style={{ margin: 0, lineHeight: 1.2 }}>
-            <span style={{ color: '#dc2626', fontWeight: 800 }}>CoSider Agrico</span>
-          </h1>
-          <h2 style={{ margin: '6px 0 0', color: '#16a34a', fontWeight: 700, fontSize: 20 }}>
-            Unité Espaces Verts
-          </h2>
-          <p style={{ marginTop: 8, color: '#6b7280' }}>Création d'un compte professionnel</p>
+      <div className="auth-card fade-in" style={{ maxWidth: 540 }}>
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          <div style={{ color: '#dc2626', fontSize: 24, fontWeight: 800 }}>CoSider Agrico</div>
+          <div style={{ color: '#16a34a', fontSize: 14, fontWeight: 600 }}>Unité Espaces Verts</div>
         </div>
+        <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: 20, fontSize: 14 }}>
+          Création de compte professionnel (CoSider Agrico)
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-2">
@@ -56,14 +54,14 @@ const Register = () => {
                 type="text"
                 className="input"
                 required
-                placeholder="Nom Prénom"
+                placeholder="Ex: Mohamed Benali"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label"><FaIdBadge /> Rôle</label>
+              <label className="form-label"><FaIdBadge /> Rôle dans l'entreprise</label>
               <select
                 className="select"
                 value={formData.role}
@@ -75,7 +73,7 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label"><FaEnvelope /> Email</label>
+              <label className="form-label"><FaEnvelope /> Email professionnel</label>
               <input
                 type="email"
                 className="input"
@@ -92,19 +90,19 @@ const Register = () => {
                 type="tel"
                 className="input"
                 required
-                placeholder="06XXXXXXXX"
+                placeholder="06XX XX XX XX"
                 value={formData.phone}
                 onChange={(e) => handleChange('phone', e.target.value)}
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label"><FaBriefcase /> Poste</label>
+              <label className="form-label"><FaBriefcase /> Poste exact</label>
               <input
                 type="text"
                 className="input"
                 required
-                placeholder="Ex: Ingénieur / Chef de chantier"
+                placeholder="Ex: Chef de Projet / Ingénieur"
                 value={formData.poste}
                 onChange={(e) => handleChange('poste', e.target.value)}
               />
@@ -127,16 +125,16 @@ const Register = () => {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: 15 }}
+            style={{ width: '100%', justifyContent: 'center', marginTop: 15, height: 45 }}
             disabled={loading}
           >
-            {loading ? 'Création...' : 'Créer mon compte'}
+            {loading ? 'Création en cours...' : 'S\'inscrire'}
           </button>
         </form>
 
         <p style={{ textAlign: 'center', marginTop: 20, color: '#6b7280' }}>
           Déjà inscrit ?{' '}
-          <Link to="/login" style={{ color: '#16a34a', fontWeight: 600 }}>
+          <Link to="/login" style={{ color: '#16a34a', fontWeight: 700 }}>
             Se connecter
           </Link>
         </p>
