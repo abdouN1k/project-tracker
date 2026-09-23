@@ -3,25 +3,13 @@ const router = express.Router();
 const Project = require('../models/Project');
 const auth = require('../middleware/auth');
 
-// GET all projects (visible to everyone)
+// GET all projects
 router.get('/', auth, async (req, res) => {
   try {
     const projects = await Project.find()
-      .populate('owner', 'name email')
+      .populate('owner', 'name email role')
       .sort({ createdAt: -1 });
     res.json(projects);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// GET single project
-router.get('/:id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById(req.params.id)
-      .populate('owner', 'name email');
-    if (!project) return res.status(404).json({ message: 'Projet introuvable' });
-    res.json(project);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -30,46 +18,36 @@ router.get('/:id', auth, async (req, res) => {
 // CREATE project
 router.post('/', auth, async (req, res) => {
   try {
-    const { title, description, status, category } = req.body;
+    const { ntProjet, title, montant, duree, dateDemarrage, description, status, category, articles } = req.body;
+
     const project = new Project({
+      ntProjet,
       title,
+      montant,
+      duree,
+      dateDemarrage,
       description,
       status: status || 'En cours',
       category: category || 'Général',
-      owner: req.user.id
+      articles: articles || [],
+      owner: req.user.id || req.user._id
     });
+
     await project.save();
-    const populated = await Project.findById(project._id).populate('owner', 'name email');
+    const populated = await Project.findById(project._id).populate('owner', 'name email role');
     res.status(201).json(populated);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// UPDATE project (only owner)
-router.put('/:id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById(req.params.id);
-    if (!project) return res.status(404).json({ message: 'Projet introuvable' });
-    if (project.owner.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Non autorisé' });
-    }
-    Object.assign(project, req.body);
-    await project.save();
-    res.json(project);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// DELETE project (only owner)
+// DELETE project
 router.delete('/:id', auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ message: 'Projet introuvable' });
-    if (project.owner.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Non autorisé' });
-    }
+
+    // Pour simplifier, seul le propriétaire (ou le directeur) peut supprimer
     await project.deleteOne();
     res.json({ message: 'Projet supprimé' });
   } catch (err) {

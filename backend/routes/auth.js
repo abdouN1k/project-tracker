@@ -1,87 +1,59 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'super_secret_key_123456789', { expiresIn: '30d' });
-};
-
-// Register
+// POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, poste, role } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Aafak 3mmer ga3 les champs' });
-    }
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ message: 'Cet utilisateur existe déjà' });
 
-    const cleanEmail = email.toLowerCase().trim();
-
-    // Check if user exists
-    const userExists = await User.findOne({ email: cleanEmail });
-    if (userExists) {
-      return res.status(400).json({ message: 'Had l email deja kayn' });
-    }
-
-    // Hash password directly here
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
-    const user = await User.create({
-      name: name.trim(),
-      email: cleanEmail,
-      password: hashedPassword
+    user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      phone,
+      poste,
+      role
     });
 
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id)
-    });
-  } catch (error) {
-    console.error('❌ ERREUR REGISTER:', error);
-    res.status(500).json({ message: error.message || 'Erreur serveur' });
+    await user.save();
+
+    const payload = { user: { id: user.id } };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    // Ne pas renvoyer le mot de passe
+    const userResponse = { _id: user._id, name: user.name, email: user.email, phone: user.phone, poste: user.poste, role: user.role };
+    res.json({ token, user: userResponse });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Login
+// POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const cleanEmail = email ? email.toLowerCase().trim() : '';
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
 
-    const user = await User.findOne({ email: cleanEmail });
-    if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ message: 'Email wla password ghalt' });
-    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
 
-    user.isOnline = true;
-    await user.save();
+    const payload = { user: { id: user.id } };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id)
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Get users
-router.get('/users', async (req, res) => {
-  try {
-    const users = await User.find().select('-password');
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const userResponse = { _id: user._id, name: user.name, email: user.email, phone: user.phone, poste: user.poste, role: user.role };
+    res.json({ token, user: userResponse });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
