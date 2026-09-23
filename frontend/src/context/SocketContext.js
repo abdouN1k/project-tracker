@@ -3,22 +3,22 @@ import io from 'socket.io-client';
 import { useAuth } from './AuthContext';
 
 const SocketContext = createContext();
-
 const SOCKET_URL = 'https://project-tracker-backend-85u8.onrender.com';
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
   const { user } = useAuth();
 
   useEffect(() => {
     if (user?.token) {
       const newSocket = io(SOCKET_URL, {
-        auth: { token: user.token }
+        transports: ['websocket', 'polling']
       });
 
-      newSocket.on('users:online', (users) => {
-        setOnlineUsers(users);
+      newSocket.on('connect', () => {
+        if (user._id) {
+          newSocket.emit('joinRoom', user._id);
+        }
       });
 
       setSocket(newSocket);
@@ -30,7 +30,7 @@ export const SocketProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <SocketContext.Provider value={{ socket, onlineUsers }}>
+    <SocketContext.Provider value={{ socket }}>
       {children}
     </SocketContext.Provider>
   );

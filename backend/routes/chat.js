@@ -3,7 +3,7 @@ const router = express.Router();
 const Message = require('../models/Message');
 const auth = require('../middleware/auth');
 
-// GET conversation between 2 users
+// Récupérer les messages entre 2 utilisateurs
 router.get('/:userId', auth, async (req, res) => {
   try {
     const messages = await Message.find({
@@ -21,7 +21,7 @@ router.get('/:userId', auth, async (req, res) => {
   }
 });
 
-// SEND message
+// Envoyer un message
 router.post('/', auth, async (req, res) => {
   try {
     const { content, receiver } = req.body;
