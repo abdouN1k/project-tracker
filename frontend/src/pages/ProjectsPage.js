@@ -13,7 +13,7 @@ const ProjectsPage = () => {
   const fetchProjects = useCallback(async () => {
     try {
       const { data } = await API.get('/projects');
-      setProjects(data);
+      setProjects(data || []);
     } catch (err) { console.error(err); }
   }, [API]);
 
@@ -46,16 +46,17 @@ const ProjectsPage = () => {
     }
   };
 
+  // Hada houa l'isla7 dial l'error 'toLowerCase' (protection m3a (p.title || ''))
   const filtered = projects.filter(p =>
-    p.title.toLowerCase().includes(search.toLowerCase()) ||
-    p.description.toLowerCase().includes(search.toLowerCase())
+    (p?.title || '').toLowerCase().includes(search.toLowerCase()) ||
+    (p?.description || '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="container fade-in">
       <div className="page-header">
         <div>
-          <h1 className="page-title">🌾 Tous les Projets</h1>
+          <h1 className="page-title">🌾 Tous les Projets - CoSider Agrico UEV</h1>
           <p className="page-subtitle">Découvrez les projets de la communauté</p>
         </div>
         <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
@@ -115,18 +116,18 @@ const ProjectsPage = () => {
         {filtered.map((project) => (
           <div key={project._id} className="project-card">
             <div className="project-header">
-              <div className="project-title">{project.title}</div>
+              <div className="project-title">{project.title || 'Sans titre'}</div>
               <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>
-                👤 {project.owner?.name} • {new Date(project.createdAt).toLocaleDateString('fr-FR')}
+                👤 {project.owner?.name || 'Inconnu'} • {project.createdAt ? new Date(project.createdAt).toLocaleDateString('fr-FR') : ''}
               </div>
             </div>
             <div className="project-body">
-              <p className="project-description">{project.description}</p>
+              <p className="project-description">{project.description || 'Pas de description'}</p>
               <div className="project-meta">
                 <span className={`badge badge-${project.status === 'Terminé' ? 'success' : project.status === 'En cours' ? 'info' : 'warning'}`}>
-                  {project.status}
+                  {project.status || 'En cours'}
                 </span>
-                <span className="badge badge-success">{project.category}</span>
+                <span className="badge badge-success">{project.category || 'Général'}</span>
               </div>
               {project.owner?._id === user?._id && (
                 <button className="btn btn-danger" style={{ marginTop: 12, width: '100%', justifyContent: 'center' }} onClick={() => handleDelete(project._id)}>
