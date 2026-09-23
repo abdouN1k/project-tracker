@@ -22,24 +22,27 @@ const Navbar = () => {
             CoSider Agrico
           </div>
           <div style={{ color: '#16a34a', fontSize: 12, fontWeight: 600 }}>
-            Unité Espaces Verts
+            Unit� Espaces Verts
           </div>
         </div>
       </Link>
 
       <div className="navbar-links">
-        <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+        <Link to="/" className={
+av-link \}>
           <FaHome /> <span>Accueil</span>
         </Link>
-        <Link to="/projects" className={`nav-link ${isActive('/projects') ? 'active' : ''}`}>
+        <Link to="/projects" className={
+av-link \}>
           <FaProjectDiagram /> <span>Projets</span>
         </Link>
-        <Link to="/chat" className={`nav-link ${isActive('/chat') ? 'active' : ''}`}>
+        <Link to="/chat" className={
+av-link \}>
           <FaComments /> <span>Messages</span>
         </Link>
 
         <span className="user-badge" style={{ background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
-          👤 {user?.name}
+          ?? {user?.name}
         </span>
 
         <button className="nav-link" onClick={handleLogout} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
