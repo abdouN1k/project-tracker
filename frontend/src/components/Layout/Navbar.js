@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaHome, FaProjectDiagram, FaComments, FaSignOutAlt } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
+import Logo from '../Common/Logo';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -15,13 +16,13 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={{ background: '#ffffff', borderBottom: '3px solid #16a34a' }}>
       <Link to="/" className="navbar-brand" style={{ textDecoration: 'none' }}>
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ color: '#ffffff', fontSize: 18, fontWeight: 800, lineHeight: 1.1 }}>
-            <span style={{ color: '#fecaca' }}>CoSider Agrico</span>
+            <span style={{ color: '#dc2626' }}>CoSider Agrico</span>
           </div>
-          <div style={{ color: '#bbf7d0', fontSize: 12, fontWeight: 600 }}>
+          <div style={{ color: '#16a34a', fontSize: 12, fontWeight: 600 }}>
             Unité Espaces Verts
           </div>
         </div>
@@ -29,25 +30,21 @@ const Navbar = () => {
 
       <div className="navbar-links">
         <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
-          <FaHome /> Accueil
+          <FaHome /> <span>Accueil</span>
         </Link>
         <Link to="/projects" className={`nav-link ${isActive('/projects') ? 'active' : ''}`}>
-          <FaProjectDiagram /> Projets
+          <FaProjectDiagram /> <span>Projets</span>
         </Link>
         <Link to="/chat" className={`nav-link ${isActive('/chat') ? 'active' : ''}`}>
-          <FaComments /> Messages
+          <FaComments /> <span>Messages</span>
         </Link>
 
-        <span className="user-badge">
-          👤 {user?.name} {user?.role ? `(${user.role})` : ''}
+        <span className="user-badge" style={{ background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
+          👤 {user?.name}
         </span>
 
-        <button
-          className="nav-link"
-          onClick={handleLogout}
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-        >
-          <FaSignOutAlt /> Déconnexion
+        <button className="nav-link" onClick={handleLogout} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+          <FaSignOutAlt color="#dc2626" /> <span style={{ color: '#dc2626' }}>Quitter</span>
         </button>
       </div>
     </nav>
