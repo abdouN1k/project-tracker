@@ -1,10 +1,14 @@
 import React from 'react';
 
-const Logo = () => {
+const Logo = ({ className = "" }) => {
   return (
-    <div style={{ textAlign: 'center', margin: '10px 0' }}>
-      <div style={{ color: '#dc2626', fontSize: '22px', fontWeight: '800' }}>CoSider Agrico</div>
-      <div style={{ color: '#16a34a', fontSize: '13px', fontWeight: '600' }}>Unité Espaces Verts</div>
+    <div className={`flex flex-col ${className}`}>
+      <span className="text-xl font-extrabold text-red-600 tracking-tight leading-none">
+        CoSider Agrico
+      </span>
+      <span className="text-xs font-semibold text-green-700 tracking-wider">
+        Unité Espaces Verts
+      </span>
     </div>
   );
 };
