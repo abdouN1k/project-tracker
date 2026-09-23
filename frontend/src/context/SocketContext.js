@@ -12,13 +12,27 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (user?.token) {
       const newSocket = io(SOCKET_URL, {
-        transports: ['websocket', 'polling']
+        transports: ['polling', 'websocket'],
+        reconnection: true,
+        reconnectionAttempts: 10,
+        reconnectionDelay: 2000,
+        timeout: 20000
       });
 
       newSocket.on('connect', () => {
-        if (user._id) {
-          newSocket.emit('joinRoom', user._id);
+        console.log('✅ Socket connecté:', newSocket.id);
+        const userId = user._id || user.id;
+        if (userId) {
+          newSocket.emit('joinRoom', userId);
         }
+      });
+
+      newSocket.on('disconnect', (reason) => {
+        console.log('⚠️ Socket déconnecté:', reason);
+      });
+
+      newSocket.on('connect_error', (error) => {
+        console.log('Connexion en cours au serveur Render...');
       });
 
       setSocket(newSocket);
