@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaLeaf, FaEnvelope, FaLock } from 'react-icons/fa';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 
@@ -29,8 +29,11 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-card fade-in">
         <div className="auth-logo">
-          <FaLeaf size={48} color="#16a34a" />
-          <h1>CoSider Agrico UEV</h1>
+          <h1>
+            <span style={{ color: '#dc2626' }}>CoSider Agrico</span>
+            {' '}
+            <span style={{ color: '#16a34a' }}>Unité Espaces Verts</span>
+          </h1>
           <p>Connectez-vous à votre compte</p>
         </div>
         <form onSubmit={handleSubmit}>
@@ -56,7 +59,12 @@ const Login = () => {
               placeholder="••••••••"
             />
           </div>
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            style={{ width: '100%', justifyContent: 'center' }}
+            disabled={loading}
+          >
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>

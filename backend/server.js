@@ -55,13 +55,10 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('Utilisateur connecté au socket:', socket.id);
+  console.log('Utilisateur connecté:', socket.id);
 
   socket.on('joinRoom', (userId) => {
-    if (userId) {
-      socket.join(String(userId));
-      console.log(`Socket ${socket.id} a rejoint le room : ${userId}`);
-    }
+    if (userId) socket.join(String(userId));
   });
 
   socket.on('sendMessage', (data) => {
@@ -70,12 +67,13 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('Utilisateur déconnecté du socket:', socket.id);
+  socket.on('userTyping', (data) => {
+    if (data?.receiverId) {
+      io.to(String(data.receiverId)).emit('userTyping', data);
+    }
   });
-});
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Serveur CoSider Agrico UEV démarré sur le port ${PORT}`);
+  socket.on('disconnect', () => {
+    console.log('Utilisateur déconnecté:', socket.id);
+  });
 });
