@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogOut, LayoutDashboard, MessageSquare, User } from 'lucide-react';
@@ -18,11 +18,11 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-md sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-
-          {/* Logo / Header Title */}
+          
+          {/* Logo / Title */}
           <Link to="/dashboard" className="flex items-center space-x-2 no-underline">
             <div className="flex flex-col">
               <span className="text-xl font-extrabold text-red-600 tracking-tight leading-none">
@@ -34,7 +34,7 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Nav Links */}
+          {/* Navigation Links */}
           <div className="flex items-center space-x-2 md:space-x-4">
             <Link
               to="/dashboard"
@@ -61,7 +61,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* User Profile & Logout */}
+          {/* User Section */}
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
               <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
