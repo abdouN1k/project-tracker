@@ -36,14 +36,14 @@ const Navbar = () => {
         alignItems: 'center',
         height: '64px'
       }}>
-
+        
         {/* Logo / Header Title */}
         <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ fontSize: '20px', fontWeight: '800', color: '#dc2626', lineHeight: '1.1' }}>
               CoSider Agrico
             </span>
-            <span style={{ fontSize: '11px', fontWeight: '700', color: '#15803d', marginTop: '2px', letterSpacing: '0.5px' }}>
+            <span style={{ fontSize: '11px', fontWeight: '700', color: '#15803d', marginTop: '2px' }}>
               Unité Espaces Verts
             </span>
           </div>
