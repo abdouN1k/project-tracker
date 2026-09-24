@@ -17,11 +17,6 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
-  const getRoleDisplay = (role) => {
-    if (!role || role === 'member') return 'Responsable Projet';
-    return role;
-  };
-
   return (
     <header style={{
       backgroundColor: '#ffffff',
@@ -44,7 +39,7 @@ const Navbar = () => {
         height: '64px',
         boxSizing: 'border-box'
       }}>
-        
+
         {/* Logo / Header Title */}
         <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -132,7 +127,7 @@ const Navbar = () => {
             <div style={{ textAlign: 'left' }}>
               <div style={{ fontSize: '12px', fontWeight: '700', color: '#1f2937', fontFamily: 'sans-serif' }}>{user.name}</div>
               <div style={{ fontSize: '10px', color: '#15803d', fontWeight: '700', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>
-                {getRoleDisplay(user.role)}
+                {user.role || 'Responsable Projet'}
               </div>
             </div>
           </div>

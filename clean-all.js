@@ -1,4 +1,87 @@
-import React from 'react';
+const fs = require('fs');
+const path = require('path');
+
+// 1. package.json نقي بدون تكرار
+const packageJson = {
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "autoprefixer": "^10.4.19",
+    "axios": "^1.6.8",
+    "lucide-react": "^0.359.0",
+    "postcss": "^8.4.38",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
+    "react-scripts": "5.0.1",
+    "socket.io-client": "^4.7.5",
+    "tailwindcss": "^3.4.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "CI=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+};
+
+// 2. index.js نقي (كود JS فقط)
+const indexJs = `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+`;
+
+// 3. index.css نقي (كود CSS فقط)
+const indexCss = `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background-color: #f9fafb;
+}
+
+a {
+  text-decoration: none !important;
+}
+`;
+
+// 4. Navbar.js نقي ومصمم أفقياً بالكامل بدون أي تكرار
+const navbarJs = `import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogOut, LayoutDashboard, MessageSquare, User } from 'lucide-react';
@@ -156,3 +239,22 @@ const Navbar = () => {
 };
 
 export default Navbar;
+`;
+
+// كتابة جميع الملفات بدون BOM
+try {
+  fs.writeFileSync(path.join(__dirname, 'frontend/package.json'), JSON.stringify(packageJson, null, 2), 'utf8');
+  fs.writeFileSync(path.join(__dirname, 'frontend/src/index.js'), indexJs, 'utf8');
+  fs.writeFileSync(path.join(__dirname, 'frontend/src/index.css'), indexCss, 'utf8');
+
+  // ضمان المجلد والكتابة فـ المسارات الممكنة
+  const layoutDir = path.join(__dirname, 'frontend/src/components/Layout');
+  if (!fs.existsSync(layoutDir)) fs.mkdirSync(layoutDir, { recursive: true });
+
+  fs.writeFileSync(path.join(layoutDir, 'Navbar.js'), navbarJs, 'utf8');
+  fs.writeFileSync(path.join(__dirname, 'frontend/src/components/Navbar.js'), navbarJs, 'utf8');
+
+  console.log('✅ Tous les fichiers ont été réécrits proprement sans AUCUN doublon !');
+} catch (err) {
+  console.error('❌ Erreur :', err);
+}
