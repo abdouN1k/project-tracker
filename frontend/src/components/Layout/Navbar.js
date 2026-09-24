@@ -84,7 +84,7 @@ const Navbar = () => {
               textDecoration: 'none',
               backgroundColor: isActive('/chat') ? '#fee2e2' : 'transparent',
               color: isActive('/chat') ? '#b91c1c' : '#4b5563',
-              border: isActive('/chat') ? '#fca5a5' : '1px solid transparent'
+              border: isActive('/chat') ? '1px solid #fca5a5' : '1px solid transparent'
             }}
           >
             <MessageSquare size={18} />
