@@ -1,8 +1,8 @@
 ﻿import React from 'react';
 
-const Logo = ({ className = "" }) => {
+const Logo = () => {
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div className="flex flex-col">
       <span className="text-xl font-extrabold text-red-600 tracking-tight leading-none">
         CoSider Agrico
       </span>
