@@ -18,17 +18,17 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
+    <header className="bg-white border-b border-gray-200 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
           {/* Logo / Header Title */}
-          <Link to="/dashboard" className="flex items-center no-underline">
+          <Link to="/dashboard" className="flex items-center space-x-2 no-underline">
             <div className="flex flex-col">
               <span className="text-xl font-extrabold text-red-600 tracking-tight leading-none">
                 CoSider Agrico
               </span>
-              <span className="text-xs font-semibold text-green-700 tracking-wider mt-0.5">
+              <span className="text-xs font-semibold text-green-700 tracking-wider mt-1">
                 Unité Espaces Verts
               </span>
             </div>
@@ -38,9 +38,9 @@ const Navbar = () => {
           <div className="flex items-center space-x-2 md:space-x-4">
             <Link
               to="/dashboard"
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 no-underline ${
+              className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 ${
                 isActive('/dashboard')
-                  ? 'bg-red-50 text-red-700 font-bold'
+                  ? 'bg-red-100 text-red-700 border border-red-200 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
             >
@@ -50,9 +50,9 @@ const Navbar = () => {
 
             <Link
               to="/chat"
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 no-underline ${
+              className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 ${
                 isActive('/chat')
-                  ? 'bg-red-50 text-red-700 font-bold'
+                  ? 'bg-red-100 text-red-700 border border-red-200 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
             >
@@ -61,15 +61,15 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* User Profile & Logout Button */}
+          {/* User Profile & Logout */}
           <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-9 h-9 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold border border-red-200">
+            <div className="flex items-center space-x-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
+              <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
                 {user.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
               </div>
               <div className="hidden sm:block text-left">
-                <div className="text-sm font-bold text-gray-800 leading-tight">{user.name}</div>
-                <div className="text-xs text-gray-500 font-medium">{user.role}</div>
+                <div className="text-xs font-bold text-gray-800 leading-tight">{user.name}</div>
+                <div className="text-[10px] text-green-700 font-bold uppercase">{user.role || 'Responsable Projet'}</div>
               </div>
             </div>
 
